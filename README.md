@@ -13,7 +13,7 @@ The project is still under heavy development.
 Clone the git down to your desired folder.
 
 ```shell
-git clone https://github.com/KB885/NullBin.git
+git clone https://github.com/KB885/Eunoia.git
 ```
 
 `cd` into the folder and install the needed libraries for laravel.
