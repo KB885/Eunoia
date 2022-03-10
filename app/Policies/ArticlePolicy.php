@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Article;
 use App\Models\User;
+use App\Models\Article;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ArticlePolicy
@@ -53,11 +54,13 @@ class ArticlePolicy
      */
     public function update(User $user, Article $article)
     {
-        return $user->id === $article->user_id;
+        return $user->id === $article->user_id
+            ? Response::allow()
+            : Response::deny('You do not own this article.');
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can delete the article.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Article  $article
@@ -65,7 +68,7 @@ class ArticlePolicy
      */
     public function delete(User $user, Article $article)
     {
-        //
+        return $user->id === $article->user_id;
     }
 
     /**
