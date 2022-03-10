@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Article;
+use App\Models\Comment;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Requests\UpdateCommentRequest;
-use App\Models\Comment;
 
 class CommentController extends Controller
 {
@@ -17,39 +19,22 @@ class CommentController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
+     * Store a newly created comment in storage.
      *
      * @param  \App\Http\Requests\StoreCommentRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCommentRequest $request)
+    public function store(StoreCommentRequest $request, Article $article)
     {
-        //
+        Comment::create([
+            'content' => $request->content,
+            'article_id' => $article->id,
+            'author_id'=> Auth::id(),
+        ]);
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Comment  $comment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Update the specified comment in storage.
      *
      * @param  \App\Http\Requests\UpdateCommentRequest  $request
      * @param  \App\Models\Comment  $comment
@@ -57,17 +42,19 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, Comment $comment)
     {
-        //
+        $this->authorize('update', $comment);
+
+        $comment->update($request->validated());
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified comment from storage.
      *
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Comment $comment)
     {
-        //
+        $this->authorize('delete', $comment);
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreArticleRequest;
 use App\Http\Requests\UpdateArticleRequest;
 
@@ -54,6 +55,7 @@ class ArticleController extends Controller
     {
         $article = Article::create([
             'title' => $request->title,
+            'author_id'=> Auth::id(),
         ]);
 
         return redirect($article->path());
@@ -68,9 +70,11 @@ class ArticleController extends Controller
     public function show(Article $article, Request $request)
     {
         // Validation that it's not coming from the same IP.
+        /*
         if(!$request->session()->has('visits')) {
             $article->increment('visits');
         }
+        */
 
         return view('articles.show', [
             'article' => $article
@@ -85,6 +89,8 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
+        $this->authorize('update', $article);
+
         return view('articles.edit', [
             'article' => $article
         ]);
@@ -99,6 +105,8 @@ class ArticleController extends Controller
      */
     public function update(UpdateArticleRequest $request, Article $article)
     {
+        $this->authorize('update', $article);
+
         $article->update($request->validated());
         return redirect($article->path());
     }
@@ -111,7 +119,6 @@ class ArticleController extends Controller
      */
     public function destroy(Article $article)
     {
-        $article->delete();
-        return;
+        $this->authorize('delete', $article);
     }
 }
