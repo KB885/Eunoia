@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="bg-gray-50 text-gray-800 antialiased" lang="en">
 <head>
     <!-- Meta -->
     <meta charset="UTF-8">
@@ -8,14 +8,14 @@
 
     <!-- Stylings -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    @livewireStyles
-
 </head>
-<body>
-    <main>
+
+<body class="h-full">
+    <main class="">
         {{ $slot }}
     </main>
-
-    @livewireScripts
+    <footer>
+        @include('layouts.components.footer')
+    </footer>
 </body>
 </html>
