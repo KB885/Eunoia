@@ -13,8 +13,8 @@ class UserPolicy
      * @param  \App\Models\Article  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $currentUser, User $user)
+    public function update(User $current_user, User $user)
     {
-        return $currentUser->id === $user->id;
+        return $current_user->id === $user->id;
     }
 }
