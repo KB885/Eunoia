@@ -13,7 +13,7 @@ class UpdateArticleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,23 @@ class UpdateArticleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => 'required|string|max:128',
+            'content' => 'required|max:10000', // 10000 - Is just to have something
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'title.required' => 'A title is required',
+            'title.max' => 'There is a limit on 128 characters',
+            'content.required' => 'Content is required to be written',
+            'content.max' => 'There is a limit on 10000 characters',
         ];
     }
 }

@@ -13,7 +13,7 @@ class UpdateCommentRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,20 @@ class UpdateCommentRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'content' => 'required|string|max:2500',
+        ];
+    }
+
+    /**
+     * Get the validation messages that apply to the request.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'content.required' => 'A content is required',
+            'content.max' => 'There is a limit on 2500 characters',
         ];
     }
 }
