@@ -11,7 +11,7 @@ use App\Http\Requests\UpdateCommentRequest;
 class CommentController extends Controller
 {
     /**
-     * Create a new ArticleController instance.
+     * Create a new CommentController instance.
      */
     public function __construct()
     {
@@ -31,6 +31,8 @@ class CommentController extends Controller
             'article_id' => $article->id,
             'author_id'=> Auth::id(),
         ]);
+
+        return redirect(route('article.show', $article));
     }
 
     /**
@@ -40,11 +42,12 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCommentRequest $request, Comment $comment)
+    public function update(UpdateCommentRequest $request, Article $article, Comment $comment)
     {
         $this->authorize('update', $comment);
-
         $comment->update($request->validated());
+
+        return redirect(route('article.show', $article));
     }
 
     /**
@@ -53,8 +56,25 @@ class CommentController extends Controller
      * @param  \App\Models\Comment  $comment
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Comment $comment)
+    public function destroy(Article $article, Comment $comment)
     {
         $this->authorize('delete', $comment);
+        $comment->delete();
+
+        return redirect(route('article.show', $article));
+    }
+
+    /**
+     * Restore the specified comment from storage.
+     *
+     * @param  \App\Models\Comment  $comment
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Article $article, Comment $comment)
+    {
+        $this->authorize('restore', $comment);
+        Comment::withTrashed()->restore();
+
+        return redirect(route('article.show', $article));
     }
 }

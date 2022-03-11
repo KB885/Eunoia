@@ -65,7 +65,7 @@ class TagPolicy
      */
     public function delete(User $user, Tag $tag)
     {
-        //
+        return $user->id === $tag->user_id;
     }
 
     /**
@@ -77,7 +77,7 @@ class TagPolicy
      */
     public function restore(User $user, Tag $tag)
     {
-        //
+        return $user->id === $tag->user_id;
     }
 
     /**

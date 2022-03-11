@@ -65,11 +65,11 @@ class CommentPolicy
      */
     public function delete(User $user, Comment $comment)
     {
-        //
+        return $user->id === $comment->user_id;
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * Determine whether the user can restore the comment.
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Comment  $comment
@@ -77,7 +77,7 @@ class CommentPolicy
      */
     public function restore(User $user, Comment $comment)
     {
-        //
+        return $user->id === $comment->user_id;
     }
 
     /**

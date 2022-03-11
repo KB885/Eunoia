@@ -106,8 +106,8 @@ class ArticleController extends Controller
     public function update(UpdateArticleRequest $request, Article $article)
     {
         $this->authorize('update', $article);
-
         $article->update($request->validated());
+
         return redirect($article->path());
     }
 
@@ -120,5 +120,22 @@ class ArticleController extends Controller
     public function destroy(Article $article)
     {
         $this->authorize('delete', $article);
+        $article->delete();
+
+        return redirect($article->path());
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Models\Article  $article
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Article $article)
+    {
+        $this->authorize('restore', $article);
+        Article::withTrashed()->restore();
+
+        return redirect($article->path());
     }
 }

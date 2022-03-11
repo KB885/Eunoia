@@ -51,5 +51,22 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $this->authorize('delete', $tag);
+        $tag->delete();
+
+        return redirect(route('tags.index'));
+    }
+
+    /**
+     * Remove the specified tag from storage.
+     *
+     * @param  \App\Models\Tag  $tag
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Tag $tag)
+    {
+        $this->authorize('restore', $tag);
+        Tag::withTrashed()->restore();
+
+        return redirect(route('tags.index'));
     }
 }
